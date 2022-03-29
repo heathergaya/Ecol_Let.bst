@@ -472,7 +472,8 @@ FUNCTION {format.names}
               if$
               t "others" =
                 {
-                  " " * bbl.etal *
+                  " " * bbl.etal emphasize *  %emphasize is important here to make sure et. al is italicized  - HG
+                  
                 }
                 {
                   bbl.and
@@ -734,13 +735,23 @@ FUNCTION {format.date}
   " (" swap$ * ")" *
 }
 FUNCTION {format.btitle}
-{ title "title" bibinfo.check
+{ title
   duplicate$ empty$ 'skip$
-    {
+    { "t" change.case$ 
       emphasize
     }
   if$
+  "title" bibinfo.check
 }
+
+%FUNCTION {format.title}
+%{ title
+%  duplicate$ empty$ 'skip$
+%    { "t" change.case$ }
+%  if$
+%  "title" bibinfo.check
+%}
+
 FUNCTION {either.or.check}
 { empty$
     'pop$
@@ -935,8 +946,16 @@ FUNCTION {format.booktitle}
   booktitle "booktitle" bibinfo.check
   emphasize
 }
+
+FUNCTION {format.in.booktitle}
+{ 
+booktitle "(" swap$ * ")" *
+emphasize
+}
+
+
 FUNCTION {format.in.ed.booktitle}
-{ format.booktitle duplicate$ empty$ 'skip$
+{ format.in.booktitle duplicate$ empty$ 'skip$
     {
       editor "editor" format.names.ed duplicate$ empty$ 'pop$
         {
@@ -1063,7 +1082,7 @@ FUNCTION {book}
   if$
   format.date "year" output.check
   date.block
-  format.btitle "title" output.check
+  format.btitle "title" output.check %Needs to be adjusted to remove capitalization in Title words
   new.block 	% added MK
   format.edition output	% added MK
   new.block	% added MK
